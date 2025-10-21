@@ -54,8 +54,8 @@ jobs:
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml tests/ --ignore tests/reg_tests --ignore tests/timing.py --ignore tests/profiling.py
     - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && ${{ env.CODECOV_TOKEN }}  # Don't attempt to upload if the codecov token is not configured
       uses: codecov/codecov-action@v3
+      if: matrix.os == 'ubuntu-latest' && ${{ env.CODECOV_TOKEN }}  # Don't attempt to upload if the codecov token is not configured
       with:
         token: ${{ env.CODECOV_TOKEN }}
         files: ./coverage.xml
