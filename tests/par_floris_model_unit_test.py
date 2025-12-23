@@ -415,9 +415,6 @@ def test_heterogeneous_inflow_config(sample_inputs_fixture):
     Check that the ParFlorisModel works with heterogeneous_inflow_config set.
     """
 
-    sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
-    sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
-
     heterogeneous_inflow_config = {
         "x": np.array([-200.0, 2000.0, -200.0, 2000.0]),
         "y": np.array([-200.0, -200.0, 200.0, 200.0]),
@@ -485,3 +482,45 @@ def test_heterogeneous_inflow_config(sample_inputs_fixture):
     powers_pfmodel = pfmodel.get_turbine_powers()
     # Confirm that the powers computed using the ParFlorisModel match those from the FlorisModel
     assert np.allclose(powers_fmodel, powers_pfmodel)
+
+def test_multidim_conditions(sample_inputs_fixture):
+    """
+    Check that the ParFlorisModel works with multidim_conditions set in the TimeSeries object.
+    """
+
+    sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
+    sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
+
+    fmodel = FlorisModel(sample_inputs_fixture.core)
+    fmodel.set(turbine_type=[sample_inputs_fixture.turbine_multi_dim])
+    pfmodel = ParFlorisModel(
+        sample_inputs_fixture.core,
+        interface="multiprocessing",
+        n_wind_condition_splits=2
+    )
+    pfmodel.set(turbine_type=[sample_inputs_fixture.turbine_multi_dim])
+
+    # Create a TimeSeries object with multidim_conditions
+    wind_speeds = np.array([8.0]*6)
+    wind_directions = np.array([270.0]*6)
+    multidim_conditions = {
+        "Tp": np.array([5.0, 5.0, 6.0, 6.0, 7.0, 7.0]),
+        "Hs": np.array([3.0, 3.0, 3.0, 4.0, 4.0, 4.0]),
+    }
+    time_series = TimeSeries(
+        wind_directions=wind_directions,
+        wind_speeds=wind_speeds,
+        turbulence_intensities=0.06 * np.ones_like(wind_speeds.flatten()),
+        multidim_conditions=multidim_conditions
+    )
+
+    fmodel.set(wind_data=time_series)
+    pfmodel.set(wind_data=time_series)
+
+    fmodel.run()
+    pfmodel.run()
+
+    f_turb_powers = fmodel.get_turbine_powers()
+    pf_turb_powers = pfmodel.get_turbine_powers()
+
+    assert np.allclose(f_turb_powers, pf_turb_powers)
