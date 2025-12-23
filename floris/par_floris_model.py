@@ -9,6 +9,7 @@ from floris.floris_model import FlorisModel
 from floris.type_dec import (
     NDArrayFloat,
 )
+from floris.utilities import is_all_scalar_dict
 
 
 class ParFlorisModel(FlorisModel):
@@ -329,6 +330,17 @@ class ParFlorisModel(FlorisModel):
                     heterogeneous_inflow_config_subset["z"] = \
                         self.core.flow_field.heterogeneous_inflow_config["z"]
                 set_args_subset["heterogeneous_inflow_config"] = heterogeneous_inflow_config_subset
+
+            # Handle multidim_conditions
+            if self.core.flow_field.multidim_conditions is not None:
+                if is_all_scalar_dict(self.core.flow_field.multidim_conditions):
+                    multidim_conditions_subset = self.core.flow_field.multidim_conditions
+                else:
+                    multidim_conditions_subset = {
+                        k: v[wc_id_split] for k, v in
+                        self.core.flow_field.multidim_conditions.items()
+                    }
+                set_args_subset["multidim_conditions"] = multidim_conditions_subset
 
             # Prepare lightweight data to pass along
             multiargs.append((fmodel_dict_split, set_args_subset))
