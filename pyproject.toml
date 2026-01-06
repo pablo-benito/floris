@@ -50,6 +50,7 @@ docs = [
     "sphinxcontrib-autoyaml~=1.0",
     "sphinxcontrib.mermaid~=1.0",
     "bokeh~=3.7",
+    "ruamel.yaml~=0.18.0",
 ]
 develop = [
     "pytest>=8,<10",
