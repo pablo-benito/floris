@@ -73,8 +73,8 @@ floris = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/NREL/floris"
-Documentation = "https://nrel.github.io/floris/"
+Homepage = "https://github.com/NatLabRockies/floris"
+Documentation = "https://natlabrockies.github.io/floris/"
 
 [coverage.run]
 # Coverage.py configuration file
