@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "floris"
-version = "4.6.2"
+version = "4.6.3"
 description = "A controls-oriented engineering wake model."
 readme = "README.md"
 requires-python = ">=3.10, <3.15"
 authors = [
-    { name = "Rafael Mudafort", email = "Rafael.Mudafort@nrel.gov" },
-    { name = "Paul Fleming", email = "Paul.Fleming@nrel.gov" },
-    { name = "Michael (Misha) Sinner", email = "Michael.Sinner@nrel.gov" },
-    { name = "Eric Simley", email = "Eric.Simley@nrel.gov" },
-    { name = "Christopher Bay", email = "Christopher.Bay@nrel.gov" },
+    { name = "Rafael Mudafort", email = "Rafael.Mudafort@nlr.gov" },
+    { name = "Paul Fleming", email = "Paul.Fleming@nlr.gov" },
+    { name = "Michael (Misha) Sinner", email = "Michael.Sinner@nlr.gov" },
+    { name = "Eric Simley", email = "Eric.Simley@nlr.gov" },
+    { name = "Christopher Bay", email = "Christopher.Bay@nlr.gov" },
 ]
 license = { file = "LICENSE.txt" }
 keywords = ["floris"]
@@ -48,7 +48,7 @@ docs = [
     "sphinx-book-theme~=1.0",
     "sphinx-autodoc-typehints>=2,<4",
     "sphinxcontrib-autoyaml~=1.0",
-    "sphinxcontrib.mermaid~=1.0",
+    "sphinxcontrib.mermaid>=1,<3",
     "bokeh~=3.7",
     "ruamel.yaml~=0.18.0",
 ]
